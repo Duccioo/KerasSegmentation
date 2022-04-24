@@ -38,7 +38,7 @@ def find_latest_checkpoint(checkpoints_path, fail_safe=True):
     latest_epoch_checkpoint = max(all_checkpoint_files,
                                   key=lambda f:
                                   int(get_epoch_number_from_path(f)))
-
+    print(latest_epoch_checkpoint)
     return latest_epoch_checkpoint
 
 def masked_categorical_crossentropy(gt, pr):

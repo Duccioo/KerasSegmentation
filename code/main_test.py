@@ -24,7 +24,6 @@ if __name__ == '__main__':
     out = predict(
         checkpoints_path= args.checkpoint_path,
         inp=args.img_path,
-     
         out_fname="/content/out.png"
     )
 
