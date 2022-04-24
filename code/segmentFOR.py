@@ -202,8 +202,7 @@ for file in glob.glob("*.jpg"): #ciclo le immagini dentro la cartella
   decoded_out = np.array(Image.open(out_img_path))
   
   print("SHAPEEE")
-  print(decoded_out)
-  print(in_mask.shape)
+  
   print("----------")
   #mi calcolo gli indici che mi servono
   DICE=1-dice_loss(decoded_out,in_mask)

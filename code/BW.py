@@ -14,10 +14,7 @@ def convert_BW(img, path='', save=False):
         if (item[0]==0 and item[1]==0 and item[2]==255):
           new_image_data.append((0, 0, 0))
 
-          
-        if (item[0]==20 and item[1]==215 and item[2]==298):
-          new_image_data.append((0, 0, 0))
-
+        
         else:
           new_image_data.append(item)
 
