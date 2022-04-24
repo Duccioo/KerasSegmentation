@@ -196,9 +196,10 @@ for file in glob.glob("*.jpg"): #ciclo le immagini dentro la cartella
   y_out =  predict(
     checkpoints_path= path_model,
     inp=file,
+    out_fname=out_img_path
   )
   in_mask= np.array(target_img) # converto in array la maschera di test
-  decoded_out = decode_labels(y_out.reshape(1, 512, 512, 1)).reshape(512, 512, 3)
+  decoded_out = np.array(out_img_path)
   output_img = Image.fromarray(decoded_out) 
   output_img.save(out_img_path)#salvo la maschera
 
