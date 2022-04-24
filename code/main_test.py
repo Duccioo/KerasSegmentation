@@ -1,9 +1,6 @@
 import argparse
-import os
-import sys
-import glob
-from keras_segmentation.predict import model_from_checkpoint_path, predict
-from IPython.display import Image
+from keras_segmentation.predict import predict
+import numpy as np
 
 
 
@@ -26,4 +23,5 @@ if __name__ == '__main__':
         out_fname="/content/out.png"
     )
 
-    Image('/content/out.png')
+    out_arrey = np.asarray(out, np.bool) 
+    print(out_arrey)
