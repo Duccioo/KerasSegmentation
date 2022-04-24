@@ -1,7 +1,7 @@
 import tensorflow as tf
 from PIL import Image
 import glob
-import matplotlib.pyplot as plt
+
 import numpy as np
 import sys
 import os
