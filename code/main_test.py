@@ -22,6 +22,7 @@ if __name__ == '__main__':
         inp=args.img_path,
         out_fname="/content/out.png"
     )
+    print(out.shape)
 
     out_arrey = np.asarray(out, np.bool) 
     print(out_arrey)

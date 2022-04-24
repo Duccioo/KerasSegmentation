@@ -12,12 +12,14 @@ import numpy as np
 from numpy import asarray
 from numpy import ndarray
 from datetime import datetime
-import sys
+
 from collections import Counter
 import argparse
 import cv2
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import accuracy_score
+
+from keras_segmentation.predict import predict
 
 #CONFIG:
 dir_log="/content/LOG/" #cartella per salvare i file di log
@@ -35,30 +37,6 @@ parser.add_argument("-u", "--no1", help="",action="store_true")
 parser.add_argument("-c", "--color", help="",action="store_true")
 args = parser.parse_args()
 
-
-def load_graph(frozen_graph_filename):
-    with tf.io.gfile.GFile(frozen_graph_filename, "rb") as f:
-        graph_def = tf.compat.v1.GraphDef()
-        graph_def.ParseFromString(f.read())
-    with tf.Graph().as_default() as graph:
-        tf.import_graph_def(graph_def, name="prefix")
-    return graph
-
-label_colours = [(0,0,0), (255,255,255)]
-                #0=unclassified, 1=globoli
-
-def decode_labels(mask, num_images=1, num_classes=2):
-    n, h, w, c = mask.shape
-    outputs = np.zeros((num_images, h, w, 3), dtype=np.uint8)
-    for i in range(num_images):
-      img = Image.new('RGB', (len(mask[i, 0]), len(mask[i])))
-      pixels = img.load()
-      for j_, j in enumerate(mask[i, :, :, 0]):
-          for k_, k in enumerate(j):
-              if k < num_classes:
-                  pixels[k_,j_] = label_colours[k]
-      outputs[i] = np.array(img)
-    return outputs
 
 #------------------------------------------------------------------------------#
 #indice Jaccard (Prof)
@@ -183,83 +161,76 @@ def imshow_components(labels,path):
     
 #----------------------MAIN---------------------------------#
 
-graph = load_graph(path_model)
-# We access the input and output nodes
-x = graph.get_tensor_by_name('prefix/create_inputs/img_filename:0')
-y = graph.get_tensor_by_name('prefix/predictions:0')
-
-plt.rcParams["figure.figsize"] = (10, 10)
-config = tf.compat.v1.ConfigProto(device_count={'GPU': 0})
-
 i=0
-with tf.compat.v1.Session(graph=graph, config=config) as sess:
-    os.chdir(dir_in) #cartella dove sono le immagini
-    print("----------------Start---------------")
-    for file in glob.glob("*.jpg"): #ciclo le immagini dentro la cartella
 
-      if args.n_img and i==args.n_img: #controllo parametro opzionale n
-        break  
+os.chdir(dir_in) #cartella dove sono le immagini
+print("----------------Start---------------")
+for file in glob.glob("*.jpg"): #ciclo le immagini dentro la cartella
 
-      in_mask_path=dir_in+file.replace(".jpg","")+'_seg.png' #path immagine di test
-      target_img = Image.open(in_mask_path) #prendo l'immagine già segmentata di test
-      
-      img = file
-      out_img_path= dir_out+"OUT_"+file #path dell'immagine che restituisce la rete
-      #in_mask_path = dir_out+"IN_"+file #(opzionale) path per salvare l'immagine in Bianco e nero della maschera 
-      
-      
-      y_out = sess.run(y, feed_dict={
-        x: img  
-      })
-      
-      in_mask= np.array(target_img) # converto in array la maschera di test
-      decoded_out = decode_labels(y_out.reshape(1, 512, 512, 1)).reshape(512, 512, 3)
-      output_img = Image.fromarray(decoded_out) 
-      output_img.save(out_img_path)#salvo la maschera
+  if args.n_img and i==args.n_img: #controllo parametro opzionale n
+    break  
 
-      #mi calcolo gli indici che mi servono
-      DICE=1-dice_loss(decoded_out,in_mask)
-      JACCARDB=jaccard_binary(in_mask, decoded_out)
-    
-      #(opzionale) posso scartare le immagini che ritornano 1.0 con DICE, ovvero le immagini completamente nere, selezionando no1
-      if args.no1 and JACCARDB==1.0: #controllo parametro opzionale no1
-        continue
+  in_mask_path=dir_in+file.replace(".jpg","")+'_seg.png' #path immagine di test
+  target_img = Image.open(in_mask_path) #prendo l'immagine già segmentata di test
+  
+  img = file
+  out_img_path= dir_out+"OUT_"+file #path dell'immagine che restituisce la rete
+  #in_mask_path = dir_out+"IN_"+file #(opzionale) path per salvare l'immagine in Bianco e nero della maschera 
+  
+  
+  y_out =  predict(
+    checkpoints_path= args.checkpoint_path,
+    inp=args.img_path,
+    out_fname="/content/out.png"
+  )
+  in_mask= np.array(target_img) # converto in array la maschera di test
+  decoded_out = decode_labels(y_out.reshape(1, 512, 512, 1)).reshape(512, 512, 3)
+  output_img = Image.fromarray(decoded_out) 
+  output_img.save(out_img_path)#salvo la maschera
 
-      
-      #JACCARDC=jaccard_Counter(decoded_out,in_mask)
-      #JACCARD=jaccard(convert_BW(target_img, in_mask_path),  output_img)
-      tp, fp, tn, fn=compute_confusion_matrix(in_mask, decoded_out)
-      ACCURACY1=accuracy_score(in_mask.reshape(-1),decoded_out.reshape(-1))#(tp+tn)/(tp+tn+fp+fn)
-      
-      #preparo le immagini per contare i glomeruli
-      #immagini predette dalla rete
-      out_component = cv2.imread(out_img_path, 0)
-      out_component = cv2.threshold(out_component, 127, 255, cv2.THRESH_BINARY)[1]  # ensure binary
-      num_labels_out, labels_out = cv2.connectedComponents(out_component)
-      
-      #immagini di test
-      in_component = cv2.imread(in_mask_path, 0)
-      in_component = cv2.threshold(in_component, 127, 255, cv2.THRESH_BINARY)[1]  # ensure binary
-      num_labels_in, labels_in = cv2.connectedComponents(in_component)
-    
-      #stampo gli indici:
-      print(str(i+1)+" "+file+":")
-      print("Jaccard:",JACCARDB)
-      print("Dice: ",DICE)
-      print('Matrice di Confusione:','\n [', tn, fp,'] \n [', fn, tp,"]")
-      print("Accuracy=",ACCURACY1, " Precision=", PRECISION(tp,fp,tn,fn)," Recall=",RECALL(tp,fp,tn,fn))
-      print("Numero Glomeruli: rete OUT->",num_labels_out-1,"test IN->",num_labels_in-1)
-      
-      if args.color: #controllo parametro opzionale color se è definito allora:
-        #salvo le immagini che evidenziano i glomeruli con colori diversi
-        imshow_components(labels_in, in_mask_path)
-        imshow_components(labels_out,out_img_path)
+  #mi calcolo gli indici che mi servono
+  DICE=1-dice_loss(decoded_out,in_mask)
+  JACCARDB=jaccard_binary(in_mask, decoded_out)
 
-      #creo un stringa da salvare poi in un file di log
-      string=file+" "+str(JACCARDB)+" "+str(DICE)+" "+str(num_labels_out-1) +" "+str(num_labels_in-1)+" "+str(ACCURACY1)+" "+str(PRECISION(tp,fp,tn,fn))+" "+str(RECALL(tp,fp,tn,fn))
-      f=open(dir_log+"log"+date+".txt", "a+")
-      f.write(string+"\n")
-      print("-----------------------------")
-      i=i+1
+  #(opzionale) posso scartare le immagini che ritornano 1.0 con DICE, ovvero le immagini completamente nere, selezionando no1
+  if args.no1 and JACCARDB==1.0: #controllo parametro opzionale no1
+    continue
+
+  
+  #JACCARDC=jaccard_Counter(decoded_out,in_mask)
+  #JACCARD=jaccard(convert_BW(target_img, in_mask_path),  output_img)
+  tp, fp, tn, fn=compute_confusion_matrix(in_mask, decoded_out)
+  ACCURACY1=accuracy_score(in_mask.reshape(-1),decoded_out.reshape(-1))#(tp+tn)/(tp+tn+fp+fn)
+  
+  #preparo le immagini per contare i glomeruli
+  #immagini predette dalla rete
+  out_component = cv2.imread(out_img_path, 0)
+  out_component = cv2.threshold(out_component, 127, 255, cv2.THRESH_BINARY)[1]  # ensure binary
+  num_labels_out, labels_out = cv2.connectedComponents(out_component)
+  
+  #immagini di test
+  in_component = cv2.imread(in_mask_path, 0)
+  in_component = cv2.threshold(in_component, 127, 255, cv2.THRESH_BINARY)[1]  # ensure binary
+  num_labels_in, labels_in = cv2.connectedComponents(in_component)
+
+  #stampo gli indici:
+  print(str(i+1)+" "+file+":")
+  print("Jaccard:",JACCARDB)
+  print("Dice: ",DICE)
+  print('Matrice di Confusione:','\n [', tn, fp,'] \n [', fn, tp,"]")
+  print("Accuracy=",ACCURACY1, " Precision=", PRECISION(tp,fp,tn,fn)," Recall=",RECALL(tp,fp,tn,fn))
+  print("Numero Glomeruli: rete OUT->",num_labels_out-1,"test IN->",num_labels_in-1)
+  
+  if args.color: #controllo parametro opzionale color se è definito allora:
+    #salvo le immagini che evidenziano i glomeruli con colori diversi
+    imshow_components(labels_in, in_mask_path)
+    imshow_components(labels_out,out_img_path)
+
+  #creo un stringa da salvare poi in un file di log
+  string=file+" "+str(JACCARDB)+" "+str(DICE)+" "+str(num_labels_out-1) +" "+str(num_labels_in-1)+" "+str(ACCURACY1)+" "+str(PRECISION(tp,fp,tn,fn))+" "+str(RECALL(tp,fp,tn,fn))
+  f=open(dir_log+"log"+date+".txt", "a+")
+  f.write(string+"\n")
+  print("-----------------------------")
+  i=i+1
 f.close()      
 
