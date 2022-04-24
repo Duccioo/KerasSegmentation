@@ -194,7 +194,7 @@ for file in glob.glob("*.jpg"): #ciclo le immagini dentro la cartella
   
   
   y_out =  predict(
-    checkpoints_path= args.checkpoint_path,
+    checkpoints_path= path_model,
     inp=args.img_path,
     out_fname="/content/out.png"
   )
