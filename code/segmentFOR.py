@@ -22,9 +22,9 @@ from sklearn.metrics import accuracy_score
 from keras_segmentation.predict import predict
 
 #CONFIG:
-dir_log="/content/LOG" #cartella per salvare i file di log
-dir_in="/content/INPUT" #cartella per prendere le maschere di test
-dir_out="/content/OUTPUT" #cartella per salvare le maschere della rete
+dir_log="/content/LOG/" #cartella per salvare i file di log
+dir_in="/content/INPUT/" #cartella per prendere le maschere di test
+dir_out="/content/OUTPUT/" #cartella per salvare le maschere della rete
 path_model="/content/checkpoint/checkpoint" #percorso dove è il modello della rete già addestrato
 #vado a prendere l'ora per salvare il file di log
 now = datetime.now()
