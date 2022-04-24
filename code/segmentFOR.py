@@ -22,10 +22,10 @@ from sklearn.metrics import accuracy_score
 from keras_segmentation.predict import predict
 
 #CONFIG:
-dir_log="/content/LOG/" #cartella per salvare i file di log
-dir_in="/content/INPUT/MiniTest/" #cartella per prendere le maschere di test
-dir_out="/content/OUTPUT/" #cartella per salvare le maschere della rete
-path_model="/content/deeplearn/frozen_model.pb" #percorso dove è il modello della rete già addestrato
+dir_log="/content/" #cartella per salvare i file di log
+dir_in="/content/" #cartella per prendere le maschere di test
+dir_out="/content/" #cartella per salvare le maschere della rete
+path_model="/content/checkpoint/checkpoint" #percorso dove è il modello della rete già addestrato
 #vado a prendere l'ora per salvare il file di log
 now = datetime.now()
 date = now.strftime("%d_%m-%H_%M")
@@ -37,6 +37,8 @@ parser.add_argument("-u", "--no1", help="",action="store_true")
 parser.add_argument("-c", "--color", help="",action="store_true")
 args = parser.parse_args()
 
+label_colours = [(0,0,0), (255,255,255)]
+                #0=unclassified, 1=globoli
 
 #------------------------------------------------------------------------------#
 #indice Jaccard (Prof)
@@ -158,6 +160,19 @@ def imshow_components(labels,path):
     # set bg label to black
     labeled_img[label_hue==0] = 0
     cv2.imwrite(path, labeled_img)
+
+def decode_labels(mask, num_images=1, num_classes=2):
+    n, h, w, c = mask.shape
+    outputs = np.zeros((num_images, h, w, 3), dtype=np.uint8)
+    for i in range(num_images):
+      img = Image.new('RGB', (len(mask[i, 0]), len(mask[i])))
+      pixels = img.load()
+      for j_, j in enumerate(mask[i, :, :, 0]):
+          for k_, k in enumerate(j):
+              if k < num_classes:
+                  pixels[k_,j_] = label_colours[k]
+      outputs[i] = np.array(img)
+    return outputs
     
 #----------------------MAIN---------------------------------#
 
