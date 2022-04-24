@@ -43,7 +43,7 @@ def model_from_checkpoint_path(checkpoints_path):
 def get_colored_segmentation_image(seg_arr, n_classes, colors=class_colors):
     output_height = seg_arr.shape[0]
     output_width = seg_arr.shape[1]
-    print(colors)
+    
 
     seg_img = np.zeros((output_height, output_width, 3))
 
