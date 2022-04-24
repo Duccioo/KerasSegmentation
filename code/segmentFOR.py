@@ -22,9 +22,9 @@ from sklearn.metrics import accuracy_score
 from keras_segmentation.predict import predict
 
 #CONFIG:
-dir_log="/content/" #cartella per salvare i file di log
-dir_in="/content/" #cartella per prendere le maschere di test
-dir_out="/content/" #cartella per salvare le maschere della rete
+dir_log="/content/LOG" #cartella per salvare i file di log
+dir_in="/content/INPUT" #cartella per prendere le maschere di test
+dir_out="/content/OUTPUT" #cartella per salvare le maschere della rete
 path_model="/content/checkpoint/checkpoint" #percorso dove è il modello della rete già addestrato
 #vado a prendere l'ora per salvare il file di log
 now = datetime.now()
@@ -66,8 +66,8 @@ def jaccard_Counter(inputs,target):
 
 #variante Jaccard (usando operazioni tra vettori booleani)
 def jaccard_binary(x,y):
-  x = np.asarray(x, np.bool) 
-  y = np.asarray(y, np.bool) 
+  x = np.asarray(x,bool) 
+  y = np.asarray(y, bool) 
   if np.bitwise_and(x, y).sum() == 0 and np.bitwise_or(x, y).sum() == 0:
         return 1.0
   return np.double(np.bitwise_and(x, y).sum()) / np.double(np.bitwise_or(x, y).sum())
@@ -201,9 +201,6 @@ for file in glob.glob("*.jpg"): #ciclo le immagini dentro la cartella
   in_mask= np.array(convert_BW(target_img)) # converto in array la maschera di test
   decoded_out = np.array(Image.open(out_img_path))
   
-  print("SHAPEEE")
-  
-  print("----------")
   #mi calcolo gli indici che mi servono
   DICE=1-dice_loss(decoded_out,in_mask)
   JACCARDB=jaccard_binary(in_mask, decoded_out)
