@@ -23,9 +23,9 @@ from keras_segmentation.predict import predict, model_from_checkpoint_path
 
 #CONFIG:
 dir_log="/content/LOG/" #cartella per salvare i file di log
-dir_in="/content/INPUT/" #cartella per prendere le maschere di test
+dir_in="/content/TEST1/" #cartella per prendere le maschere di test
 dir_out="/content/OUTPUT/" #cartella per salvare le maschere della rete
-path_model="/content/checkpoint/checkpoint" #percorso dove è il modello della rete già addestrato
+path_model="/content/drive/MyDrive/Main/UNIVERSITA'/Progetto/checkpoint/checkpoint" #percorso dove è il modello della rete già addestrato
 #vado a prendere l'ora per salvare il file di log
 now = datetime.now()
 date = now.strftime("%d_%m-%H_%M")
@@ -206,7 +206,7 @@ for file in glob.glob("*.jpg"): #ciclo le immagini dentro la cartella
     inp=file,
     out_fname=out_img_path
   )
-  
+
   in_mask= np.array(convert_BW(target_img)) # converto in array la maschera di test
   decoded_out = np.array(Image.open(out_img_path))
   
