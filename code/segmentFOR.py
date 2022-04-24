@@ -162,7 +162,7 @@ def imshow_components(labels,path):
     cv2.imwrite(path, labeled_img)
 
 def decode_labels(mask, num_images=1, num_classes=2):
-    n, h, w, c = mask.shape
+    h, w = mask.shape
     outputs = np.zeros((num_images, h, w, 3), dtype=np.uint8)
     for i in range(num_images):
       img = Image.new('RGB', (len(mask[i, 0]), len(mask[i])))
