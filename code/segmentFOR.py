@@ -198,11 +198,11 @@ for file in glob.glob("*.jpg"): #ciclo le immagini dentro la cartella
     inp=file,
     out_fname=out_img_path
   )
-  in_mask= np.array(target_img) # converto in array la maschera di test
-  decoded_out = np.array(convert_BW(Image.open(out_img_path)))
+  in_mask= np.array(convert_BW(target_img)) # converto in array la maschera di test
+  decoded_out = np.array(Image.open(out_img_path))
   
   print("SHAPEEE")
-  print(decoded_out.shape)
+  print(decoded_out)
   print(in_mask.shape)
   print("----------")
   #mi calcolo gli indici che mi servono
