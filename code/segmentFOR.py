@@ -202,7 +202,7 @@ for file in glob.glob("*.jpg"): #ciclo le immagini dentro la cartella
   decoded_out = np.array(Image.open(out_img_path))
   
   
-  print(decode_out.shape)
+  print(decoded_out.shape)
   print(in_mask.shape)
 
   #mi calcolo gli indici che mi servono
