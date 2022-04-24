@@ -198,7 +198,7 @@ for file in glob.glob("*.jpg"): #ciclo le immagini dentro la cartella
     inp=file,
   )
   in_mask= np.array(target_img) # converto in array la maschera di test
-  decoded_out = decode_labels(y_out.reshape(1, 512, 512, 1)).reshape(512, 512, 3)
+  decoded_out = decode_labels(y_out).reshape(512, 512, 3)
   output_img = Image.fromarray(decoded_out) 
   output_img.save(out_img_path)#salvo la maschera
 
