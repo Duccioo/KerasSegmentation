@@ -100,12 +100,12 @@ def compute_confusion_matrix(inputs,target):
       
       try:
         FP = CM[0][1]
-        FP = CM[1][0]
+        FN = CM[1][0]
         TP = CM[1][1]
       except:
         TP=0 
       else:
-        print("")
+        True
       
      
     return(TP, FP, TN, FN)
@@ -120,19 +120,17 @@ def ACCURACY(tp,fp,tn,fn):
   
 #PRECISION
 def PRECISION(tp,fp,tn,fn):
-
   if (tp+fp)==0 and (tp)==0:
     return 1
 
   elif (tp+fp)==0:
     return 0
-  
+
   else:
     return float((tp)/(tp+fp))
 
 #RECALL    
 def RECALL(tp,fp,tn,fn):
-
   if (tp+fn)==0 and (tp)==0:
     return 1
     
@@ -141,6 +139,15 @@ def RECALL(tp,fp,tn,fn):
 
   else:
     return float((tp)/(tp+fn))
+
+#F1 score:
+def F1_SCORE(tp,fn,fp):
+  if tp==0 and tp+( (fn+fp)/2 )==0:
+    return 1
+  elif tp+( (fn+fp)/2 )==0:
+    return 0
+  else:
+    return tp/( tp+( (fn+fp)/2 ) )
 
 
 #funzione per creare immagine che evidenzia glomeruli con colori
