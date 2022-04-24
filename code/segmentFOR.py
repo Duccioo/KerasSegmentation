@@ -19,7 +19,7 @@ import cv2
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import accuracy_score
 
-from keras_segmentation.predict import predict
+from keras_segmentation.predict import predict, model_from_checkpoint_path
 
 #CONFIG:
 dir_log="/content/LOG/" #cartella per salvare i file di log
@@ -184,6 +184,7 @@ def decode_labels(mask, num_images=1, num_classes=2):
 #----------------------MAIN---------------------------------#
 
 i=0
+model_in= model_from_checkpoint_path(path_model)
 
 os.chdir(dir_in) #cartella dove sono le immagini
 print("----------------Start---------------")
@@ -201,10 +202,11 @@ for file in glob.glob("*.jpg"): #ciclo le immagini dentro la cartella
   
   
   y_out =  predict(
-    checkpoints_path= path_model,
+    model= model_in,
     inp=file,
     out_fname=out_img_path
   )
+  
   in_mask= np.array(convert_BW(target_img)) # converto in array la maschera di test
   decoded_out = np.array(Image.open(out_img_path))
   
