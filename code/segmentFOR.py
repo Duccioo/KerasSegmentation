@@ -12,7 +12,7 @@ import numpy as np
 from numpy import asarray
 from numpy import ndarray
 from datetime import datetime
-
+from BW import convert_BW
 from collections import Counter
 import argparse
 import cv2
@@ -199,7 +199,7 @@ for file in glob.glob("*.jpg"): #ciclo le immagini dentro la cartella
     out_fname=out_img_path
   )
   in_mask= np.array(target_img) # converto in array la maschera di test
-  decoded_out = np.array(Image.open(out_img_path))
+  decoded_out = np.array(convert_BW(Image.open(out_img_path)))
   
   print("SHAPEEE")
   print(decoded_out.shape)
