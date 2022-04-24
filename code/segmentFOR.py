@@ -162,7 +162,7 @@ def imshow_components(labels,path):
     cv2.imwrite(path, labeled_img)
 
 def decode_labels(mask, num_images=1, num_classes=2):
-    h, w = mask.shape
+    n, h, w, c = mask.shape
     outputs = np.zeros((num_images, h, w, 3), dtype=np.uint8)
     for i in range(num_images):
       img = Image.new('RGB', (len(mask[i, 0]), len(mask[i])))
@@ -198,7 +198,7 @@ for file in glob.glob("*.jpg"): #ciclo le immagini dentro la cartella
     inp=file,
   )
   in_mask= np.array(target_img) # converto in array la maschera di test
-  decoded_out = decode_labels(y_out).reshape(512, 512, 3)
+  decoded_out = decode_labels(y_out.reshape(1, 512, 512, 1)).reshape(512, 512, 3)
   output_img = Image.fromarray(decoded_out) 
   output_img.save(out_img_path)#salvo la maschera
 
