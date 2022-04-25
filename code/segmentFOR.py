@@ -4,7 +4,7 @@
 #-u per saltare le immagini tutte nere
 #-n per far svolgere alla rete solo un numero n finito di immagini
 
-from msilib.schema import Media
+
 import tensorflow as tf
 from PIL import Image
 import glob, os
