@@ -264,4 +264,6 @@ f.close()
 MediaJaccard = MediaJaccard / (i-1)
 
 print('~~~~~~Test Finito~~~~~~ ')
+print("i",i)
+
 print("Media Jaccard:",MediaJaccard)
