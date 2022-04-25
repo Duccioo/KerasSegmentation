@@ -261,7 +261,7 @@ for file in glob.glob("*.jpg"): #ciclo le immagini dentro la cartella
   i=i+1
 f.close()      
 
-MediaJaccard = MediaJaccard / (i-1)
+MediaJaccard = MediaJaccard / (i)
 
 print('~~~~~~Test Finito~~~~~~ ')
 print("i",i)
