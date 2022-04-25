@@ -4,6 +4,7 @@
 #-u per saltare le immagini tutte nere
 #-n per far svolgere alla rete solo un numero n finito di immagini
 
+from msilib.schema import Media
 import tensorflow as tf
 from PIL import Image
 import glob, os
@@ -22,9 +23,9 @@ from sklearn.metrics import accuracy_score
 from keras_segmentation.predict import predict, model_from_checkpoint_path
 
 #CONFIG:
-dir_log="/content/LOG/" #cartella per salvare i file di log
+dir_log="/content/drive/MyDrive/Main/UNIVERSITA'/Progetto/LOG1/" #cartella per salvare i file di log
 dir_in="/content/TEST1/" #cartella per prendere le maschere di test
-dir_out="/content/OUTPUT/" #cartella per salvare le maschere della rete
+dir_out="/content/drive/MyDrive/Main/UNIVERSITA'/Progetto/OUTPUT1/" #cartella per salvare le maschere della rete
 path_model="/content/drive/MyDrive/Main/UNIVERSITA'/Progetto/checkpoint/checkpoint" #percorso dove è il modello della rete già addestrato
 #vado a prendere l'ora per salvare il file di log
 now = datetime.now()
@@ -185,6 +186,7 @@ def decode_labels(mask, num_images=1, num_classes=2):
 
 i=0
 model_in= model_from_checkpoint_path(path_model)
+MediaJaccard=0
 
 os.chdir(dir_in) #cartella dove sono le immagini
 print("----------------Start---------------")
@@ -248,6 +250,9 @@ for file in glob.glob("*.jpg"): #ciclo le immagini dentro la cartella
     imshow_components(labels_in, in_mask_path)
     imshow_components(labels_out,out_img_path)
 
+  #calcolo la media
+  MediaJaccard=MediaJaccard+JACCARDB
+
   #creo un stringa da salvare poi in un file di log
   string=file+" "+str(JACCARDB)+" "+str(DICE)+" "+str(num_labels_out-1) +" "+str(num_labels_in-1)+" "+str(ACCURACY1)+" "+str(PRECISION(tp,fp,tn,fn))+" "+str(RECALL(tp,fp,tn,fn))
   f=open(dir_log+"log"+date+".txt", "a+")
@@ -256,3 +261,7 @@ for file in glob.glob("*.jpg"): #ciclo le immagini dentro la cartella
   i=i+1
 f.close()      
 
+MediaJaccard = MediaJaccard / (i-1)
+
+print('~~~~~~Test Finito~~~~~~ ')
+print("Media Jaccard:",MediaJaccard)
