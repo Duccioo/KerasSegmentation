@@ -24,7 +24,7 @@ from keras_segmentation.predict import predict, model_from_checkpoint_path
 
 #CONFIG:
 dir_log="/content/drive/MyDrive/Main/UNIVERSITA'/Progetto/LOG1/" #cartella per salvare i file di log
-dir_in="/content/TEST1/" #cartella per prendere le maschere di test
+dir_in="/content/TEST/" #cartella per prendere le maschere di test
 dir_out="/content/drive/MyDrive/Main/UNIVERSITA'/Progetto/OUTPUT1/" #cartella per salvare le maschere della rete
 path_model="/content/drive/MyDrive/Main/UNIVERSITA'/Progetto/checkpoint/checkpoint" #percorso dove è il modello della rete già addestrato
 #vado a prendere l'ora per salvare il file di log
