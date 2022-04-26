@@ -67,7 +67,7 @@ def jaccard_Counter(inputs,target):
 
 #variante Jaccard (usando operazioni tra vettori booleani)
 def jaccard_binary(x,y):
-  x = np.asarray(x,bool) 
+  x = np.asarray(x, bool) 
   y = np.asarray(y, bool) 
   if np.bitwise_and(x, y).sum() == 0 and np.bitwise_or(x, y).sum() == 0:
         return 1.0
@@ -221,11 +221,12 @@ for file in glob.glob("*.jpg"): #ciclo le immagini dentro la cartella
     continue
 
   
-  #JACCARDC=jaccard_Counter(decoded_out,in_mask)
-  #JACCARD=jaccard(convert_BW(target_img, in_mask_path),  output_img)
   tp, fp, tn, fn=compute_confusion_matrix(in_mask, decoded_out)
   ACCURACY1=accuracy_score(in_mask.reshape(-1),decoded_out.reshape(-1))#(tp+tn)/(tp+tn+fp+fn)
-  
+  PRESCISION1=PRECISION(tp,fp,tn,fn)
+  RECALL1=RECALL(tp,fp,tn,fn)
+  F1_SCORE1=F1_SCORE(tp,fn,fp)
+
   #preparo le immagini per contare i glomeruli
   #immagini predette dalla rete
   out_component = cv2.imread(out_img_path, 0)
@@ -242,7 +243,7 @@ for file in glob.glob("*.jpg"): #ciclo le immagini dentro la cartella
   print("Jaccard:",JACCARDB)
   print("Dice: ",DICE)
   print('Matrice di Confusione:','\n [', tn, fp,'] \n [', fn, tp,"]")
-  print("Accuracy=",ACCURACY1, " Precision=", PRECISION(tp,fp,tn,fn)," Recall=",RECALL(tp,fp,tn,fn))
+  print("Accuracy=",ACCURACY1, " Precision=", PRESCISION1," Recall=",RECALL1)
   print("Numero Glomeruli: rete OUT->",num_labels_out-1,"test IN->",num_labels_in-1)
   
   if args.color: #controllo parametro opzionale color se è definito allora:
@@ -254,12 +255,12 @@ for file in glob.glob("*.jpg"): #ciclo le immagini dentro la cartella
   MediaJaccard=MediaJaccard+JACCARDB
 
   #creo un stringa da salvare poi in un file di log
-  string=file+" "+str(JACCARDB)+" "+str(DICE)+" "+str(num_labels_out-1) +" "+str(num_labels_in-1)+" "+str(ACCURACY1)+" "+str(PRECISION(tp,fp,tn,fn))+" "+str(RECALL(tp,fp,tn,fn))
+  string=file+" "+str(JACCARDB)+" "+str(DICE)+" "+str(num_labels_out-1) +" "+str(num_labels_in-1)+" "+str(ACCURACY1)+" "+str(PRESCISION1)+" "+str(RECALL1)
   f=open(dir_log+"log"+date+".txt", "a+")
   f.write(string+"\n")
   print("-----------------------------")
   i=i+1
-f.close()      
+  f.close()      
 
 MediaJaccard = MediaJaccard / (i)
 
