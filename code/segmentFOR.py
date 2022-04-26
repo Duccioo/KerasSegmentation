@@ -93,7 +93,6 @@ def compute_confusion_matrix(inputs,target):
     inputs1=inputs.reshape(-1)
     target1=target.reshape(-1)
     CM = confusion_matrix(target1,inputs1)
-    print("1:", CM[0][0]," 2:",CM[0][1]," 3:",CM[1][0]," 4:",CM[1][1])
     
     if CM.ndim==1:
       TN=CM[0][0]
@@ -105,7 +104,7 @@ def compute_confusion_matrix(inputs,target):
         FN = CM[1][0]
         TP = CM[1][1]
       except:
-        TP=0 
+        print("error") 
       else:
         True
       
