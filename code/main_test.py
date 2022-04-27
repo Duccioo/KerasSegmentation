@@ -24,5 +24,4 @@ if __name__ == '__main__':
     )
     print(out.shape)
 
-    out_arrey = np.asarray(out, np.bool) 
-    print(out_arrey)
+   
