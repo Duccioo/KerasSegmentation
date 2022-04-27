@@ -93,8 +93,12 @@ def compute_confusion_matrix(inputs,target):
     FP = 0
     TN = 0
     FN = 0
-    inputs1=inputs.reshape(-1)
-    target1=target.reshape(-1)
+    #inputs1=inputs.reshape(-1)
+    #target1=target.reshape(-1)
+    target1=np.asarray(target).astype(np.bool)
+    
+    inputs1=np.asarray(inputs).astype(np.bool)
+    
     CM = confusion_matrix(target1,inputs1)
     
     if CM.ndim==1:
@@ -215,7 +219,6 @@ for file in glob.glob("*.jpg"): #ciclo le immagini dentro la cartella
 
   in_mask= np.array(convert_BW(target_img)) # converto in array la maschera di test
   #decoded_out = np.array(Image.open(out_img_path))
-  
   decoded_out = y_out
   
   #mi calcolo gli indici che mi servono
