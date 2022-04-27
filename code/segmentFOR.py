@@ -122,17 +122,14 @@ def F1_SCORE(tp,fn,fp):
 #funzione per creare immagine che evidenzia glomeruli con colori
 def imshow_components(labels,path):
     # Map component labels to hue val
-
     if np.max(labels)==0:
         label_hue = np.uint8((179*labels)/1)
     else:
       label_hue = np.uint8(179*labels/np.max(labels))
     blank_ch = 255*np.ones_like(label_hue)
     labeled_img = cv2.merge([label_hue, blank_ch, blank_ch])
-
     # cvt to BGR for display
     labeled_img = cv2.cvtColor(labeled_img, cv2.COLOR_HSV2BGR)
-
     # set bg label to black
     labeled_img[label_hue==0] = 0
     cv2.imwrite(path, labeled_img)
@@ -218,7 +215,7 @@ for file in glob.glob("*.jpg"): #ciclo le immagini dentro la cartella
   i=i+1
   f.close()      
 
-MediaJaccard = MediaJaccard / (i)
 
 print('~~~~~~Test Finito~~~~~~ ')
+MediaJaccard = MediaJaccard / (i)
 print("Media Jaccard:",MediaJaccard)
