@@ -212,7 +212,7 @@ for file in glob.glob("*.jpg"): #ciclo le immagini dentro la cartella
     out_fname=out_img_path
   )
 
-  in_mask= np.array(convert_BW(target_img)) # converto in array la maschera di test
+  in_mask= np.array(convert_BW(target_img,dir_log,True)) # converto in array la maschera di test
   decoded_out = np.array(Image.open(out_img_path))
   
   #mi calcolo gli indici che mi servono
