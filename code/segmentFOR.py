@@ -25,11 +25,9 @@ parser = argparse.ArgumentParser()
 parser.add_argument("-n", "--n_img", help="", type=int)
 parser.add_argument("-u", "--no1", help="",action="store_true")
 parser.add_argument("-c", "--color", help="",action="store_true")
-
 parser.add_argument('--output', dest='output_path', type=str, default='train')
 parser.add_argument('--log', dest='log_path', type=str, default='train')
 parser.add_argument('--checkpoint', dest='checkpoint_path', type=str, default='train')
-
 args = parser.parse_args()
 
 #CONFIG:
@@ -70,29 +68,19 @@ def compute_confusion_matrix(inputs,target):
     FP = 0
     TN = 0
     FN = 0
-    #inputs1=inputs.reshape(-1)
-    #target1=target.reshape(-1)
-    target1=np.asarray(target).astype(np.bool)
-    
-    inputs1=np.asarray(inputs).astype(np.bool)
-    
+    inputs1=inputs.reshape(-1)
+    target1=target.reshape(-1)
     CM = confusion_matrix(target1,inputs1)
-    
     if CM.ndim==1:
       TN=CM[0][0]
     else:
       TN = CM[0][0]
-      
       try:
         FP = CM[0][1]
         FN = CM[1][0]
         TP = CM[1][1]
       except:
         error=1
-      else:
-        True
-      
-     
     return(TP, FP, TN, FN)
 
 #ACCURACY
@@ -107,21 +95,17 @@ def ACCURACY(tp,fp,tn,fn):
 def PRECISION(tp,fp,tn,fn):
   if (tp+fp)==0 and (tp)==0:
     return 1
-
   elif (tp+fp)==0:
     return 0
-
   else:
     return float((tp)/(tp+fp))
 
 #RECALL    
 def RECALL(tp,fp,tn,fn):
   if (tp+fn)==0 and (tp)==0:
-    return 1
-    
+    return 1  
   elif (tp+fn)==0:
     return 0
-
   else:
     return float((tp)/(tp+fn))
 
@@ -152,20 +136,7 @@ def imshow_components(labels,path):
     # set bg label to black
     labeled_img[label_hue==0] = 0
     cv2.imwrite(path, labeled_img)
-
-def decode_labels(mask, num_images=1, num_classes=2):
-    n, h, w, c = mask.shape
-    outputs = np.zeros((num_images, h, w, 3), dtype=np.uint8)
-    for i in range(num_images):
-      img = Image.new('RGB', (len(mask[i, 0]), len(mask[i])))
-      pixels = img.load()
-      for j_, j in enumerate(mask[i, :, :, 0]):
-          for k_, k in enumerate(j):
-              if k < num_classes:
-                  pixels[k_,j_] = label_colours[k]
-      outputs[i] = np.array(img)
-    return outputs
-    
+  
 #----------------------MAIN---------------------------------#
 
 i=0
@@ -191,7 +162,7 @@ for file in glob.glob("*.jpg"): #ciclo le immagini dentro la cartella
     model= model_in,
     inp=file,
     out_fname=out_img_path,
-    colors= [(0,0,0), (255,255,255)]
+    colors= label_colours
   )
 
   in_mask= np.array(convert_BW(target_img)) # converto in array la maschera di test
