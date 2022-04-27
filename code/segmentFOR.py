@@ -209,11 +209,14 @@ for file in glob.glob("*.jpg"): #ciclo le immagini dentro la cartella
   y_out =  predict(
     model= model_in,
     inp=file,
-    out_fname=out_img_path
+    out_fname=out_img_path,
+    colors= [(0,0,0), (255,255,255)]
   )
 
-  in_mask= np.array(convert_BW(target_img,in_mask_path.replace("seg","BW"),True)) # converto in array la maschera di test
-  decoded_out = np.array(Image.open(out_img_path))
+  in_mask= np.array(convert_BW(target_img)) # converto in array la maschera di test
+  #decoded_out = np.array(Image.open(out_img_path))
+  
+  decoded_out = y_out
   
   #mi calcolo gli indici che mi servono
   DICE=1-dice_loss(decoded_out,in_mask)
