@@ -18,6 +18,7 @@ def convert_BW(img, path='', save=False):
           print(". ")
         else:
           new_image_data.append(item)
+          print("# ")
 
     img.putdata(new_image_data)
     #(opzionale) salvo l'immagine convertita in bianco e nero
