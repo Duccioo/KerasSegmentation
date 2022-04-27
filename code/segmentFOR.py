@@ -90,9 +90,9 @@ def compute_confusion_matrix(inputs,target):
     FP = 0
     TN = 0
     FN = 0
-    inputs1=inputs.reshape(-1)
-    target1=target.reshape(-1)
-    CM = confusion_matrix(target1,inputs1)
+    #inputs1=inputs.reshape(-1)
+    #target1=target.reshape(-1)
+    CM = confusion_matrix(target,inputs)
     
     if CM.ndim==1:
       TN=CM[0][0]
@@ -265,6 +265,4 @@ for file in glob.glob("*.jpg"): #ciclo le immagini dentro la cartella
 MediaJaccard = MediaJaccard / (i)
 
 print('~~~~~~Test Finito~~~~~~ ')
-print("i",i)
-
 print("Media Jaccard:",MediaJaccard)

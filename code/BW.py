@@ -25,5 +25,5 @@ def convert_BW(img, path='', save=False):
     return img
 
 
-#folder= sys.argv[1]
-#convert_BW( Image.open(folder),folder.replace("seg","BW"),True)
+folder= sys.argv[1]
+convert_BW( Image.open(folder),folder.replace("seg","BW"),True)
