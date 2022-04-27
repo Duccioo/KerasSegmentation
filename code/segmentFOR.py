@@ -11,12 +11,10 @@ import glob, os
 import numpy as np
 from datetime import datetime
 from BW import convert_BW
-from collections import Counter
 import argparse
 import cv2
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import accuracy_score
-
 from keras_segmentation.predict import predict, model_from_checkpoint_path
 
 
@@ -134,7 +132,7 @@ def imshow_components(labels,path):
     labeled_img[label_hue==0] = 0
     cv2.imwrite(path, labeled_img)
   
-#----------------------MAIN---------------------------------#
+#-------------------------------------MAIN---------------------------------------------#
 
 i=0
 model_in= model_from_checkpoint_path(path_model)
