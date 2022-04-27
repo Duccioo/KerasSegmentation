@@ -251,7 +251,6 @@ for file in glob.glob("*.jpg"): #ciclo le immagini dentro la cartella
   
   if args.color: #controllo parametro opzionale color se è definito allora:
     #salvo le immagini che evidenziano i glomeruli con colori diversi
-    imshow_components(labels_in, in_mask_path)
     imshow_components(labels_out,out_img_path)
 
   #calcolo la media
