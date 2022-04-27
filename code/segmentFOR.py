@@ -8,10 +8,7 @@
 import tensorflow as tf
 from PIL import Image
 import glob, os
-import matplotlib.pyplot as plt
 import numpy as np
-from numpy import asarray
-from numpy import ndarray
 from datetime import datetime
 from BW import convert_BW
 from collections import Counter
@@ -22,21 +19,27 @@ from sklearn.metrics import accuracy_score
 
 from keras_segmentation.predict import predict, model_from_checkpoint_path
 
-#CONFIG:
-dir_log="/content/drive/MyDrive/Main/UNIVERSITA'/Progetto/LOG1/" #cartella per salvare i file di log
-dir_in="/content/TEST/" #cartella per prendere le maschere di test
-dir_out="/content/drive/MyDrive/Main/UNIVERSITA'/Progetto/OUTPUT1/" #cartella per salvare le maschere della rete
-path_model="/content/drive/MyDrive/Main/UNIVERSITA'/Progetto/checkpoint/checkpoint" #percorso dove è il modello della rete già addestrato
-#vado a prendere l'ora per salvare il file di log
-now = datetime.now()
-date = now.strftime("%d_%m-%H_%M")
 
 #opzioni per utilizzare solo n immagini e saltare quelle che ritornano 1.0
 parser = argparse.ArgumentParser()
 parser.add_argument("-n", "--n_img", help="", type=int)
 parser.add_argument("-u", "--no1", help="",action="store_true")
 parser.add_argument("-c", "--color", help="",action="store_true")
+
+parser.add_argument('--output', dest='output_path', type=str, default='train')
+parser.add_argument('--log', dest='log_path', type=str, default='train')
+parser.add_argument('--checkpoint', dest='checkpoint_path', type=str, default='train')
+
 args = parser.parse_args()
+
+#CONFIG:
+dir_log= args.log_path #cartella per salvare i file di log
+dir_in= "/content/TEST/" #cartella per prendere le maschere di test
+dir_out=args.output_path #cartella per salvare le maschere della rete
+path_model= args.checkpoint_path #percorso dove è il modello della rete già addestrato
+#vado a prendere l'ora per salvare il file di log
+now = datetime.now()
+date = now.strftime("%d_%m-%H_%M")
 
 label_colours = [(0,0,0), (255,255,255)]
                 #0=unclassified, 1=globoli
@@ -104,7 +107,7 @@ def compute_confusion_matrix(inputs,target):
         FN = CM[1][0]
         TP = CM[1][1]
       except:
-        print("error") 
+        error=1
       else:
         True
       
