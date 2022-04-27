@@ -45,29 +45,6 @@ label_colours = [(0,0,0), (255,255,255)]
                 #0=unclassified, 1=globoli
 
 #------------------------------------------------------------------------------#
-#indice Jaccard (Prof)
-def jaccard(inputs, target):
-    im1 = np.asarray(inputs).astype(np.bool)
-    im2 = np.asarray(target).astype(np.bool)
-    if im1.shape != im2.shape: 
-          print(im1.shape)
-          print(im2.shape)
-          raise ValueError("Errore Dimensionamento: im1 e im2 devono avere la stessa dimensione!.")
-    intersection = np.logical_and(im1,im2)
-    union = np.logical_or(im1,im2)
-    #print(np.divide(float(np.sum(intersection)),float(np.sum(union)))).astype(float)
-    return np.divide(float(np.sum(intersection)),float(np.sum(union))).astype(float)
-
-#variante Jaccard (usando counter)
-def jaccard_Counter(inputs,target):
-    a=inputs.ravel()
-    b=target.ravel()
-    _a = Counter(a)
-    _b = Counter(b)
-    c = (_a - _b) + (_b - _a)
-    n = sum(c.values())
-    return 1-(n/(len(a) + len(b) - n))
-
 #variante Jaccard (usando operazioni tra vettori booleani)
 def jaccard_binary(x,y):
   x = np.asarray(x, bool) 
