@@ -22,12 +22,12 @@ from keras_segmentation.predict import predict, model_from_checkpoint_path
 
 #opzioni per utilizzare solo n immagini e saltare quelle che ritornano 1.0
 parser = argparse.ArgumentParser()
-parser.add_argument("-n", "--n_img", help="", type=int)
-parser.add_argument("-u", "--no1", help="",action="store_true")
-parser.add_argument("-c", "--color", help="",action="store_true")
-parser.add_argument('--output', dest='output_path', type=str, default='train')
-parser.add_argument('--log', dest='log_path', type=str, default='train')
-parser.add_argument('--checkpoint', dest='checkpoint_path', type=str, default='train')
+parser.add_argument("-n", "--n_img", help="", type=int)#-n per far svolgere alla rete solo un numero n finito di immagini
+parser.add_argument("-u", "--no1", help="",action="store_true")#-u per saltare le immagini tutte nere
+parser.add_argument("-c", "--color", help="",action="store_true") #-c per salvare le versioni delle maschere e dell'output della rete a colori
+parser.add_argument('--output', dest='output_path', type=str)
+parser.add_argument('--log', dest='log_path', type=str)
+parser.add_argument('--checkpoint', dest='checkpoint_path', type=str)
 args = parser.parse_args()
 
 #CONFIG:
