@@ -11,9 +11,9 @@ from keras_segmentation.models.unet import mobilenet_unet
 parser = argparse.ArgumentParser()
 
 #cartelle contenenti immagini, maschere e checkpoint
-parser.add_argument('--img', dest='img_path', type=str, default='train')
-parser.add_argument('--masks', dest='masks_path', type=str, default='train')
-parser.add_argument('--checkpoint', dest='checkpoint_path', type=str, default='train')
+parser.add_argument('--img', dest='img_path', type=str, default='')
+parser.add_argument('--masks', dest='masks_path', type=str, default='')
+parser.add_argument('--checkpoint', dest='checkpoint_path', type=str, default='/content/')
 parser.add_argument('--text', dest='text_path', type=str, default='')
 
 #indicano il numero di epoche e quanti step fare ad ogni epoca
@@ -37,6 +37,7 @@ if __name__ == '__main__':
 
 	if args.text_path!="":
 		model.train(
+			train_images=args.img_path,
 			text_path=args.text_path,
 			checkpoints_path = args.checkpoint_path, #"/content/prova" , 
 			epochs=args.epoch,

@@ -1,6 +1,7 @@
 import itertools
 import os
 import random
+from tkinter import image_names
 import six
 import numpy as np
 import cv2
@@ -56,7 +57,7 @@ def get_image_list_from_text(text_path):
     
     return image_files
 
-def get_pairs_from_text(text_path, other_inputs_paths=None):
+def get_pairs_from_text(img_path,text_path, other_inputs_paths=None):
     image_files = []
     segmentation_files = {}
     file=open(text_path, "r")
@@ -65,19 +66,19 @@ def get_pairs_from_text(text_path, other_inputs_paths=None):
     for line in (file):
         #popola image_files
         img_file=line.split(" ")[0]
-        if os.path.isfile(os.path.join(text_path, img_file)) and \
+        if os.path.isfile(os.path.join(img_path, img_file)) and \
                 os.path.splitext(img_file)[1] in ACCEPTABLE_IMAGE_FORMATS:
             file_name, file_extension = os.path.splitext(img_file)
             image_files.append((file_name, file_extension,
-                                os.path.join(text_path,img_file)))
+                                os.path.join(img_path,img_file)))
             image_files.append(img_file)
 
         #popola segmentation_files
         seg_file=line.split(" ")[1]
-        if os.path.isfile(os.path.join(text_path, seg_file)) and \
+        if os.path.isfile(os.path.join(img_path, seg_file)) and \
         os.path.splitext(seg_file)[1] in ACCEPTABLE_SEGMENTATION_FORMATS:
             file_name, file_extension = os.path.splitext(seg_file)
-            full_dir_entry = os.path.join(text_path, seg_file)
+            full_dir_entry = os.path.join(img_path, seg_file)
             if file_name in segmentation_files:
                 raise DataLoaderError("Segmentation file with filename {0}"
                                         " already exists and is ambiguous to"
@@ -347,7 +348,7 @@ def image_segmentation_generator( batch_size,
         zipped = itertools.cycle(img_seg_pairs)
 
     if ignore_segs==False and text_path!=False:
-        img_seg_pairs = get_pairs_from_text(text_path, other_inputs_paths=other_inputs_paths)
+        img_seg_pairs = get_pairs_from_text(images_path,text_path, other_inputs_paths=other_inputs_paths)
         random.shuffle(img_seg_pairs)
         zipped = itertools.cycle(img_seg_pairs)
 
