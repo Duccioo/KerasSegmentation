@@ -61,7 +61,7 @@ def get_pairs_from_text(img_path,text_path, other_inputs_paths=None):
     image_files = []
     segmentation_files = {}
     file=open(text_path, "r")
-
+    print(img_path)
     
     for line in (file):
         #popola image_files
