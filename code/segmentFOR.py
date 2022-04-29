@@ -74,11 +74,6 @@ def compute_confusion_matrix(inputs,target):
     inputs1=inputs.reshape(-1)
     target1=target.reshape(-1)
 
-    np.savetxt("/content/prova.txt",inputs1)
-
-    
-    #print(np.max(inputs1))
-    #print(np.max(target1))
     CM = confusion_matrix(target1,inputs1)
     if CM.ndim==1:
       TN=CM[0][0]
@@ -174,17 +169,13 @@ for file in glob.glob("*.jpg"): #ciclo le immagini dentro la cartella
   
   
         
-  print(np.max(y_out))
-     
+    
   in_mask= np.array(convert_BW(target_img)) # converto in array la maschera di test
   decoded_out = np.array(Image.open(out_img_path))
   #decoded_out = y_out
-  for val in y_out.reshape(-1):
-      if val !=0 and val !=255:
-          print(val)
-      
+ 
   
-  print(in_mask.shape,y_out.shape)
+
   #mi calcolo gli indici che mi servono
   #DICE=1-dice(y_out,in_mask)
   DICE=1-dice(in_mask.reshape(-1)/255,y_out.reshape(-1)/255)
@@ -196,7 +187,7 @@ for file in glob.glob("*.jpg"): #ciclo le immagini dentro la cartella
 
   
   tp, fp, tn, fn=compute_confusion_matrix(in_mask, y_out)
-  ACCURACY1=accuracy_score(in_mask.reshape(-1),decoded_out.reshape(-1))#(tp+tn)/(tp+tn+fp+fn)
+  ACCURACY1=accuracy_score(in_mask.reshape(-1),y_out.reshape(-1))#(tp+tn)/(tp+tn+fp+fn)
   PRESCISION1=PRECISION(tp,fp,tn,fn)
   RECALL1=RECALL(tp,fp,tn,fn)
   F1_SCORE1=F1_SCORE(tp,fn,fp)
