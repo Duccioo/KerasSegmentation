@@ -214,7 +214,7 @@ for file in glob.glob("*.jpg"): #ciclo le immagini dentro la cartella
   
   #opzionale se attivo salva la fusione tra la maschera creata dalla rete e l'immagine originale
   if args.overlay:
-    output_img = Image.fromarray(overlay_seg_image(Image.open(file),y_out)) 
+    output_img = Image.fromarray(overlay_seg_image(np.array(Image.open(file)),y_out)) 
     output_img.save(out_img_path)#salvo la maschera
 
   if args.color: #controllo parametro opzionale color se è definito allora:
