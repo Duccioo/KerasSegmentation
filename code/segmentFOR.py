@@ -72,7 +72,7 @@ def compute_confusion_matrix(inputs,target):
 
     np.savetxt("/content/prova.txt",inputs1)
 
-    for val in inputs1:
+    for val in target1:
       if val!=0 and val!=255:
         print(val)
 
