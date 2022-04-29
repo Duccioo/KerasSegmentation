@@ -15,7 +15,7 @@ import argparse
 import cv2
 from sklearn.metrics import confusion_matrix,jaccard_score
 from sklearn.metrics import accuracy_score
-from keras_segmentation.predict import predict, model_from_checkpoint_path
+from keras_segmentation.predict import predict, model_from_checkpoint_path,overlay_seg_image
 from scipy.spatial.distance import dice
 
 #opzioni per utilizzare solo n immagini e saltare quelle che ritornano 1.0
@@ -23,6 +23,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("-n", "--n_img", help="", type=int)#-n per far svolgere alla rete solo un numero n finito di immagini
 parser.add_argument("-u", "--no1", help="",action="store_true")#-u per saltare le immagini tutte nere
 parser.add_argument("-c", "--color", help="",action="store_true") #-c per salvare le versioni delle maschere e dell'output della rete a colori
+parser.add_argument("--overlay", help="",action="store_true") 
 parser.add_argument('--output', dest='output_path', type=str)
 parser.add_argument('--log', dest='log_path', type=str)
 parser.add_argument('--checkpoint', dest='checkpoint_path', type=str)
@@ -211,7 +212,11 @@ for file in glob.glob("*.jpg"): #ciclo le immagini dentro la cartella
   print("Accuracy=",ACCURACY1, " Precision=", PRESCISION1," Recall=",RECALL1)
   print("Numero Glomeruli: rete OUT->",num_labels_out-1,"test IN->",num_labels_in-1)
   
-  
+  #opzionale se attivo salva la fusione tra la maschera creata dalla rete e l'immagine originale
+  if args.overlay:
+    output_img = Image.fromarray(overlay_seg_image(in_mask,y_out)) 
+    output_img.save(out_img_path)#salvo la maschera
+
   if args.color: #controllo parametro opzionale color se è definito allora:
     #salvo le immagini che evidenziano i glomeruli con colori diversi
     imshow_components(labels_out,out_img_path)
