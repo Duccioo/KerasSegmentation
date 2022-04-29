@@ -66,9 +66,9 @@ def get_pairs_from_text(img_path,text_path, other_inputs_paths=None):
     for line in (file):
         #popola image_files
         img_file=line.split(" ")[0].split("/")
-        print(os.path.join(img_path, img_file))
+        print((img_path+img_file))
 
-        if os.path.isfile(os.path.join(img_path, img_file)):
+        if os.path.isfile((img_path+img_file)):
             file_name, file_extension = os.path.splitext(img_file)
             image_files.append((file_name, file_extension,
                                 os.path.join(img_path,img_file)))
@@ -79,7 +79,7 @@ def get_pairs_from_text(img_path,text_path, other_inputs_paths=None):
         seg_file=line.split(" ")[1]
         print(os.path.join(img_path, seg_file))
         
-        if os.path.isfile(os.path.join(img_path, seg_file)):
+        if os.path.isfile((img_path+seg_file)):
             file_name, file_extension = os.path.splitext(seg_file)
             full_dir_entry = os.path.join(img_path, seg_file)
             if file_name in segmentation_files:
