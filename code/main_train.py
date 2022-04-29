@@ -44,6 +44,7 @@ if __name__ == '__main__':
 			steps_per_epoch=args.step_epoch,
 			auto_resume_checkpoint=args.autoresume,
 			verify_dataset=False,
+			validate=True
 		)
 
 	else: 

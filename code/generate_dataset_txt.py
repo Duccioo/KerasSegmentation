@@ -32,19 +32,8 @@ def main():
     
     # create txt
     dir_path = sys.argv[2]
-    print("---create test.txt---")
-    with open(os.path.join(dir_path, 'test.txt'), 'w') as f:
-        for i, l in test_data.iterrows():
-            print(l)
-            f.write(l['img'][len(path):] + '\n')
-            
-    print("---create valid.txt---")
-    with open(os.path.join(dir_path, 'valid.txt'), 'w') as f:
-        for i, l in valid_data.iterrows():
-            print(l)
-            f.write(l['img'][len(path):] + ' ' + l['mask'][len(path):] + '\n'  )
-                        
-            
+          
+                           
     print("---create train.txt---")
     with open(os.path.join(dir_path, 'train.txt'), 'w') as f:
         for i, l in train_data.iterrows():
