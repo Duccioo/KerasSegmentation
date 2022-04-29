@@ -54,10 +54,7 @@ def get_colored_segmentation_image(seg_arr, n_classes, colors=class_colors):
         seg_img[:, :, 1] += ((seg_arr_c)*(colors[c][1])).astype('uint8')
         seg_img[:, :, 2] += ((seg_arr_c)*(colors[c][2])).astype('uint8')
 
-    for val in seg_img.reshape(-1):
-        if val!=0 and val!=255:
-            print(val)
-        
+    
     return seg_img
 
 

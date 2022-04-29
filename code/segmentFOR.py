@@ -168,6 +168,11 @@ for file in glob.glob("*.jpg"): #ciclo le immagini dentro la cartella
     overlay_img=False
   )
 
+  for val in y_out.reshape(-1):
+        if val!=0 and val!=255:
+            print(val)
+        
+
   in_mask= np.array(convert_BW(target_img)) # converto in array la maschera di test
   decoded_out = np.array(Image.open(out_img_path))
   #decoded_out = y_out
