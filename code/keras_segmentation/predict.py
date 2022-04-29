@@ -46,18 +46,18 @@ def get_colored_segmentation_image(seg_arr, n_classes, colors=class_colors):
     
 
     seg_img = np.zeros((output_height, output_width, 3))
-    print(np.max(seg_arr))
-    print(n_classes)
-
-    for val in seg_arr.reshape(-1):
-        if val!=0 and val!=1:
-            print(val)
+    
+         
     for c in range(n_classes):
         seg_arr_c = seg_arr[:, :] == c
         seg_img[:, :, 0] += ((seg_arr_c)*(colors[c][0])).astype('uint8')
         seg_img[:, :, 1] += ((seg_arr_c)*(colors[c][1])).astype('uint8')
         seg_img[:, :, 2] += ((seg_arr_c)*(colors[c][2])).astype('uint8')
 
+    for val in seg_img.reshape(-1):
+        if val!=0 and val!=255:
+            print(val)
+        
     return seg_img
 
 
