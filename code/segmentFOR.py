@@ -66,6 +66,7 @@ def compute_confusion_matrix(inputs,target):
     FP = 0
     TN = 0
     FN = 0
+    inputs.save("/content/")
     inputs1=inputs.reshape(-1)
     target1=target.reshape(-1)
     print(np.max(inputs1))
