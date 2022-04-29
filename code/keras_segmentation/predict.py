@@ -110,6 +110,10 @@ def visualize_segmentation(seg_arr, inp_img=None, n_classes=None,
     print("dimensioni:",prediction_height,prediction_width)
     seg_img = get_colored_segmentation_image(seg_arr, n_classes, colors=colors)
 
+    for val in seg_img.reshape(-1):
+        if val !=0 and val !=255:
+            print(val)
+            
     if inp_img is not None:
         original_h = inp_img.shape[0]
         original_w = inp_img.shape[1]
