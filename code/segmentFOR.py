@@ -158,7 +158,7 @@ for file in glob.glob("*.jpg"): #ciclo le immagini dentro la cartella
     inp=file,
     out_fname=out_img_path,
     colors= label_colours,
-    overlay_img=False
+    overlay_img=True
   )
 
   in_mask= np.array(convert_BW(target_img)) # converto in array la maschera di test
