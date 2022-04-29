@@ -43,7 +43,8 @@ if __name__ == '__main__':
 			epochs=args.epoch,
 			steps_per_epoch=args.step_epoch,
 			auto_resume_checkpoint=args.autoresume,
-			verify_dataset=False
+			verify_dataset=False,
+			validate=True
 			
 		)
 
