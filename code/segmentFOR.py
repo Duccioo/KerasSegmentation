@@ -69,6 +69,7 @@ def compute_confusion_matrix(inputs,target):
     inputs1=inputs.reshape(-1)
     target1=target.reshape(-1)
     print(np.max(inputs1))
+    print(np.max(target1))
     CM = confusion_matrix(target1,inputs1)
     if CM.ndim==1:
       TN=CM[0][0]
