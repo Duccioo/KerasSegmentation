@@ -111,7 +111,7 @@ def train(model,
     if validate:
         #assert val_images is not None
         #assert val_annotations is not None
-
+        True
     if optimizer_name is not None:
 
         if ignore_zero_class:
