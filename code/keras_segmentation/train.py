@@ -59,7 +59,7 @@ class CheckpointsCallback(Callback):
 
 
 def train(model,
-          train_images="",
+          train_images,
           train_annotations="",
           input_height=None,
           input_width=None,
@@ -176,7 +176,7 @@ def train(model,
         custom_augmentation=custom_augmentation, other_inputs_paths=other_inputs_paths,
         preprocessing=preprocessing, read_image_type=read_image_type,text_path=text_path)
 
-    print(train_gen)
+    
     if validate:
         val_gen = image_segmentation_generator(
             val_images, val_annotations,  val_batch_size,
