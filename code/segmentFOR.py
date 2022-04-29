@@ -174,7 +174,7 @@ for file in glob.glob("*.jpg"): #ciclo le immagini dentro la cartella
   in_mask= np.array(convert_BW(target_img)) # converto in array la maschera di test
   decoded_out = np.array(Image.open(out_img_path))
   #decoded_out = y_out
-  print(in_mask.shape,decoded_out.shape)
+  print(in_mask.shape,"y_out:",y_out.shape)
   #mi calcolo gli indici che mi servono
   DICE=1-dice_loss(y_out,in_mask)
   JACCARDB=jaccard_binary(in_mask, y_out)
