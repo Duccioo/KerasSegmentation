@@ -13,10 +13,10 @@ from datetime import datetime
 from BW import convert_BW
 import argparse
 import cv2
-from sklearn.metrics import confusion_matrix
+from sklearn.metrics import confusion_matrix,jaccard_score
 from sklearn.metrics import accuracy_score
 from keras_segmentation.predict import predict, model_from_checkpoint_path
-
+from scipy.distance import dice
 
 #opzioni per utilizzare solo n immagini e saltare quelle che ritornano 1.0
 parser = argparse.ArgumentParser()
@@ -60,7 +60,7 @@ def dice_loss(inputs, target):
     dice = 1 - dice.sum() / num
     return dice
 
-def dice(pred, true, k = 255):
+def dice_alt(pred, true, k = 255):
     intersection = np.sum(pred[true==k]) * 2.0
     dice = intersection / (np.sum(pred) + np.sum(true))
     return dice
@@ -186,9 +186,10 @@ for file in glob.glob("*.jpg"): #ciclo le immagini dentro la cartella
   
   print(in_mask.shape,y_out.shape)
   #mi calcolo gli indici che mi servono
-  DICE=1-dice(y_out,in_mask)
-  JACCARDB=jaccard_binary(in_mask/255, y_out/255)
-
+  #DICE=1-dice(y_out,in_mask)
+  DICE=dice(in_mask.reshape(-1)/255,y_out.reshape(-1)/255)
+  #JACCARDB=jaccard_binary(in_mask/255, y_out/255)
+  JACCARDB=jaccard_score(in_mask.reshape(-1)/255,y_out.reshape(-1)/255)
   #(opzionale) posso scartare le immagini che ritornano 1.0 con DICE, ovvero le immagini completamente nere, selezionando no1
   if args.no1 and JACCARDB==1.0: #controllo parametro opzionale no1
     continue
