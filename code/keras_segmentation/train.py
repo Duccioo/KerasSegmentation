@@ -109,8 +109,8 @@ def train(model,
     output_width = model.output_width
 
     if validate:
-        assert val_images is not None
-        assert val_annotations is not None
+        #assert val_images is not None
+        #assert val_annotations is not None
 
     if optimizer_name is not None:
 
