@@ -16,7 +16,7 @@ import cv2
 from sklearn.metrics import confusion_matrix,jaccard_score
 from sklearn.metrics import accuracy_score
 from keras_segmentation.predict import predict, model_from_checkpoint_path
-from scipy.distance import dice
+from scipy.spatial.distance import dice
 
 #opzioni per utilizzare solo n immagini e saltare quelle che ritornano 1.0
 parser = argparse.ArgumentParser()
