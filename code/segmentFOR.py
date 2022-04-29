@@ -187,7 +187,6 @@ for file in glob.glob("*.jpg"): #ciclo le immagini dentro la cartella
   #(opzionale) posso scartare le immagini che ritornano 1.0 con DICE, ovvero le immagini completamente nere, selezionando no1
   if args.no1 and JACCARDB==1.0: #controllo parametro opzionale no1
     continue
-
   
   tp, fp, tn, fn=compute_confusion_matrix(in_mask, y_out)
   ACCURACY1=accuracy_score(in_mask.reshape(-1),y_out.reshape(-1))#(tp+tn)/(tp+tn+fp+fn)

@@ -37,7 +37,6 @@ class DataLoaderError(Exception):
     pass
 
 
-
 def get_image_list_from_path(images_path ):
     image_files = []
     for dir_entry in os.listdir(images_path):
@@ -47,6 +46,95 @@ def get_image_list_from_path(images_path ):
                 image_files.append(os.path.join(images_path, dir_entry))
     return image_files
 
+##########
+def get_image_list_from_text(text_path):
+    image_files = []
+    with open(text_path) as bigfile:
+        for  line in enumerate(bigfile):
+            new_line=line.partition(" ")[0]
+            image_files.append(new_line)
+    
+    return image_files
+
+def get_pairs_from_text(text_path, other_inputs_paths=None):
+    image_files = []
+    segmentation_files = {}
+    file=open(text_path, "r")
+
+    
+    for line in (file):
+        #popola image_files
+        img_file=line.split(" ")[0]
+        if os.path.isfile(os.path.join(text_path, img_file)) and \
+                os.path.splitext(img_file)[1] in ACCEPTABLE_IMAGE_FORMATS:
+            file_name, file_extension = os.path.splitext(img_file)
+            image_files.append((file_name, file_extension,
+                                os.path.join(text_path,img_file)))
+            image_files.append(img_file)
+
+        #popola segmentation_files
+        seg_file=line.split(" ")[1]
+        if os.path.isfile(os.path.join(text_path, seg_file)) and \
+        os.path.splitext(seg_file)[1] in ACCEPTABLE_SEGMENTATION_FORMATS:
+            file_name, file_extension = os.path.splitext(seg_file)
+            full_dir_entry = os.path.join(text_path, seg_file)
+            if file_name in segmentation_files:
+                raise DataLoaderError("Segmentation file with filename {0}"
+                                        " already exists and is ambiguous to"
+                                        " resolve with path {1}."
+                                        " Please remove or rename the latter."
+                                        .format(file_name, full_dir_entry))
+
+            segmentation_files[file_name] = (file_extension, full_dir_entry)
+
+    if other_inputs_paths is not None:
+            other_inputs_files = []
+
+            for i, other_inputs_path in enumerate(other_inputs_paths):
+                temp = []
+
+                for y, dir_entry in enumerate(os.listdir(other_inputs_path)):
+                    if os.path.isfile(os.path.join(other_inputs_path, dir_entry)) and \
+                            os.path.splitext(dir_entry)[1] in ACCEPTABLE_IMAGE_FORMATS:
+                        file_name, file_extension = os.path.splitext(dir_entry)
+
+                        temp.append((file_name, file_extension,
+                                    os.path.join(other_inputs_path, dir_entry)))
+
+                other_inputs_files.append(temp)
+
+    return_value = []
+    # Match the images and segmentations
+    for image_file, _, image_full_path in image_files:
+        if image_file in segmentation_files:
+            if other_inputs_paths is not None:
+                other_inputs = []
+                for file_paths in other_inputs_files:
+                    success = False
+
+                    for (other_file, _, other_full_path) in file_paths:
+                        if image_file == other_file:
+                            other_inputs.append(other_full_path)
+                            success = True
+                            break
+
+                    if not success:
+                        raise ValueError("There was no matching other input to", image_file, "in directory")
+
+                return_value.append((image_full_path,
+                                     segmentation_files[image_file][1], other_inputs))
+            else:
+                return_value.append((image_full_path,
+                                     segmentation_files[image_file][1]))
+        else:
+            # Error out
+            raise DataLoaderError("No corresponding segmentation "
+                                  "found for image {0}."
+                                  .format(image_full_path))
+
+    return return_value
+
+    
 
 def get_pairs_from_paths(images_path, segs_path, ignore_non_matching=False, other_inputs_paths=None):
     """ Find all the images from the images_path directory and
@@ -242,22 +330,30 @@ def verify_segmentation_dataset(images_path, segs_path,
         return False
 
 
-def image_segmentation_generator(images_path, segs_path, batch_size,
+def image_segmentation_generator( batch_size,
                                  n_classes, input_height, input_width,
                                  output_height, output_width,
+                                 images_path="", segs_path="",
                                  do_augment=False,
                                  augmentation_name="aug_all",
                                  custom_augmentation=None,
                                  other_inputs_paths=None, preprocessing=None,
-                                 read_image_type=cv2.IMREAD_COLOR , ignore_segs=False ):
+                                 read_image_type=cv2.IMREAD_COLOR , ignore_segs=False,text_path=False ):
     
 
-    if not ignore_segs:
+    if (not ignore_segs) and text_path==False:
         img_seg_pairs = get_pairs_from_paths(images_path, segs_path, other_inputs_paths=other_inputs_paths)
         random.shuffle(img_seg_pairs)
         zipped = itertools.cycle(img_seg_pairs)
+
+    if ignore_segs==False and text_path!=False:
+        img_seg_pairs = get_pairs_from_text(text_path, other_inputs_paths=other_inputs_paths)
+        random.shuffle(img_seg_pairs)
+        zipped = itertools.cycle(img_seg_pairs)
+
     else:
         img_list = get_image_list_from_path( images_path )
+        img_list = get_image_list_from_text(text_path)
         random.shuffle( img_list )
         img_list_gen = itertools.cycle( img_list )
 

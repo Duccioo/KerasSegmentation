@@ -90,6 +90,7 @@ for item in set_name:
     min_y=min(set_y)   
     max_x=max(set_x)
     max_y=max(set_y)
+
     collage_maker(item,args.img_path,max_x,max_y,min_x,min_y,path_collage_out=args.collage_out,format=args.format)
     set_x.clear()
     set_y.clear()

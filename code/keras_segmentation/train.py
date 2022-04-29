@@ -1,3 +1,4 @@
+from cgitb import text
 import json
 import os
 
@@ -58,8 +59,8 @@ class CheckpointsCallback(Callback):
 
 
 def train(model,
-          train_images,
-          train_annotations,
+          train_images="",
+          train_annotations="",
           input_height=None,
           input_width=None,
           n_classes=None,
@@ -84,9 +85,11 @@ def train(model,
           custom_augmentation=None,
           other_inputs_paths=None,
           preprocessing=None,
-          read_image_type=1  # cv2.IMREAD_COLOR = 1 (rgb),
+          read_image_type=1,  # cv2.IMREAD_COLOR = 1 (rgb),
                              # cv2.IMREAD_GRAYSCALE = 0,
                              # cv2.IMREAD_UNCHANGED = -1 (4 channels like RGBA)
+          text_path=False  
+
          ):
     from .models.all_models import model_from_name
     # check if user gives model name instead of the model object
@@ -166,11 +169,12 @@ def train(model,
             assert verified
 
     train_gen = image_segmentation_generator(
-        train_images, train_annotations,  batch_size,  n_classes,
+        batch_size,  n_classes,
         input_height, input_width, output_height, output_width,
+        images_path=train_images,  segs_path=train_annotations,
         do_augment=do_augment, augmentation_name=augmentation_name,
         custom_augmentation=custom_augmentation, other_inputs_paths=other_inputs_paths,
-        preprocessing=preprocessing, read_image_type=read_image_type)
+        preprocessing=preprocessing, read_image_type=read_image_type,text_path=text_path)
 
     if validate:
         val_gen = image_segmentation_generator(
