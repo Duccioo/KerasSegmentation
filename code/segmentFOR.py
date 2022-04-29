@@ -162,9 +162,9 @@ for file in glob.glob("*.jpg"): #ciclo le immagini dentro la cartella
   )
 
   in_mask= np.array(convert_BW(target_img)) # converto in array la maschera di test
-  #decoded_out = np.array(Image.open(out_img_path))
-  decoded_out = y_out
-  
+  decoded_out = np.array(Image.open(out_img_path))
+  #decoded_out = y_out
+  print(in_mask.shape,decoded_out.shape)
   #mi calcolo gli indici che mi servono
   DICE=1-dice_loss(decoded_out,in_mask)
   JACCARDB=jaccard_binary(in_mask, decoded_out)
@@ -198,6 +198,7 @@ for file in glob.glob("*.jpg"): #ciclo le immagini dentro la cartella
   print('Matrice di Confusione:','\n [', tn, fp,'] \n [', fn, tp,"]")
   print("Accuracy=",ACCURACY1, " Precision=", PRESCISION1," Recall=",RECALL1)
   print("Numero Glomeruli: rete OUT->",num_labels_out-1,"test IN->",num_labels_in-1)
+  
   
   if args.color: #controllo parametro opzionale color se è definito allora:
     #salvo le immagini che evidenziano i glomeruli con colori diversi
