@@ -66,7 +66,7 @@ def compute_confusion_matrix(inputs,target):
     FP = 0
     TN = 0
     FN = 0
-    np.save("/content/prova.txt",inputs)
+    np.savetxt("/content/prova.txt",inputs)
     inputs1=inputs.reshape(-1)
     target1=target.reshape(-1)
     print(np.max(inputs1))
