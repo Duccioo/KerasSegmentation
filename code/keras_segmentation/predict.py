@@ -107,6 +107,7 @@ def visualize_segmentation(seg_arr, inp_img=None, n_classes=None,
     if n_classes is None:
         n_classes = np.max(seg_arr)
 
+    print("dimensioni:",prediction_height,prediction_width)
     seg_img = get_colored_segmentation_image(seg_arr, n_classes, colors=colors)
 
     if inp_img is not None:
