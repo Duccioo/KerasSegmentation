@@ -347,7 +347,8 @@ def image_segmentation_generator( batch_size,
         random.shuffle(img_seg_pairs)
         zipped = itertools.cycle(img_seg_pairs)
 
-    if ignore_segs==False and text_path!=False:
+    elif ignore_segs==False and text_path!=False:
+        print("au")
         img_seg_pairs = get_pairs_from_text(images_path,text_path, other_inputs_paths=other_inputs_paths)
         random.shuffle(img_seg_pairs)
         zipped = itertools.cycle(img_seg_pairs)
