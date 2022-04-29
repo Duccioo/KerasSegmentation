@@ -119,7 +119,7 @@ def visualize_segmentation(seg_arr, inp_img=None, n_classes=None,
         seg_img = cv2.resize(seg_img, (prediction_width, prediction_height), interpolation=cv2.INTER_NEAREST)
         if inp_img is not None:
             inp_img = cv2.resize(inp_img,
-                                 (prediction_width, prediction_height))
+                                 (prediction_width, prediction_height), interpolation=cv2.INTER_NEAREST)
 
     if overlay_img:
         assert inp_img is not None
