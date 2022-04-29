@@ -71,8 +71,13 @@ def compute_confusion_matrix(inputs,target):
     target1=target.reshape(-1)
 
     np.savetxt("/content/prova.txt",inputs1)
-    print(np.max(inputs1))
-    print(np.max(target1))
+
+    for val in inputs1:
+      if val>0:
+        print(val)
+
+    #print(np.max(inputs1))
+    #print(np.max(target1))
     CM = confusion_matrix(target1/255,inputs1/255)
     if CM.ndim==1:
       TN=CM[0][0]
