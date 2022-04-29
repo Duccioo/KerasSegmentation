@@ -52,11 +52,9 @@ def jaccard_binary(x,y):
 #Dice
 def dice_loss(inputs, target):
     num = np.size(target,0)
-    print(target.shape, inputs.shape)
     inputs = inputs.reshape(num, -1)
     target = target.reshape(num, -1)
     smooth = 1.0
-
     intersection = (inputs * target)
     dice = (2. * intersection.sum(1) + smooth) / (inputs.sum(1) + target.sum(1) + smooth)
     dice = 1 - dice.sum() / num
@@ -170,21 +168,28 @@ for file in glob.glob("*.jpg"): #ciclo le immagini dentro la cartella
     overlay_img=False
   )
   
-      
+  for val in y_out.reshape(-1):
+    if val!=0 and val!=255:
+        print(val)
+            
+  
+        
+  print(np.max(y_out))
+
   in_mask= np.array(convert_BW(target_img)) # converto in array la maschera di test
   decoded_out = np.array(Image.open(out_img_path))
   #decoded_out = y_out
-  print(in_mask.shape,"y_out:",y_out.shape)
+  print(in_mask.shape,decoded_out.shape)
   #mi calcolo gli indici che mi servono
-  DICE=1-dice_loss(y_out,in_mask)
-  JACCARDB=jaccard_binary(in_mask, y_out)
+  DICE=1-dice_loss(decoded_out,in_mask)
+  JACCARDB=jaccard_binary(in_mask, decoded_out)
 
   #(opzionale) posso scartare le immagini che ritornano 1.0 con DICE, ovvero le immagini completamente nere, selezionando no1
   if args.no1 and JACCARDB==1.0: #controllo parametro opzionale no1
     continue
 
   
-  tp, fp, tn, fn=compute_confusion_matrix(in_mask, y_out)
+  tp, fp, tn, fn=compute_confusion_matrix(in_mask, decoded_out)
   ACCURACY1=accuracy_score(in_mask.reshape(-1),decoded_out.reshape(-1))#(tp+tn)/(tp+tn+fp+fn)
   PRESCISION1=PRECISION(tp,fp,tn,fn)
   RECALL1=RECALL(tp,fp,tn,fn)
