@@ -187,7 +187,7 @@ for file in glob.glob("*.jpg"): #ciclo le immagini dentro la cartella
   print(in_mask.shape,y_out.shape)
   #mi calcolo gli indici che mi servono
   #DICE=1-dice(y_out,in_mask)
-  DICE=dice(in_mask.reshape(-1)/255,y_out.reshape(-1)/255)
+  DICE=1-dice(in_mask.reshape(-1)/255,y_out.reshape(-1)/255)
   #JACCARDB=jaccard_binary(in_mask/255, y_out/255)
   JACCARDB=jaccard_score(in_mask.reshape(-1)/255,y_out.reshape(-1)/255)
   #(opzionale) posso scartare le immagini che ritornano 1.0 con DICE, ovvero le immagini completamente nere, selezionando no1
