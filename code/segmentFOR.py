@@ -181,15 +181,15 @@ for file in glob.glob("*.jpg"): #ciclo le immagini dentro la cartella
   #decoded_out = y_out
   print(in_mask.shape,decoded_out.shape)
   #mi calcolo gli indici che mi servono
-  DICE=1-dice_loss(decoded_out,in_mask)
-  JACCARDB=jaccard_binary(in_mask, decoded_out)
+  DICE=1-dice_loss(y_out,in_mask)
+  JACCARDB=jaccard_binary(in_mask, y_out)
 
   #(opzionale) posso scartare le immagini che ritornano 1.0 con DICE, ovvero le immagini completamente nere, selezionando no1
   if args.no1 and JACCARDB==1.0: #controllo parametro opzionale no1
     continue
 
   
-  tp, fp, tn, fn=compute_confusion_matrix(in_mask, decoded_out)
+  tp, fp, tn, fn=compute_confusion_matrix(in_mask, y_out)
   ACCURACY1=accuracy_score(in_mask.reshape(-1),decoded_out.reshape(-1))#(tp+tn)/(tp+tn+fp+fn)
   PRESCISION1=PRECISION(tp,fp,tn,fn)
   RECALL1=RECALL(tp,fp,tn,fn)
