@@ -60,6 +60,10 @@ def dice_loss(inputs, target):
     dice = 1 - dice.sum() / num
     return dice
 
+def dice(pred, true, k = 255):
+    intersection = np.sum(pred[true==k]) * 2.0
+    dice = intersection / (np.sum(pred) + np.sum(true))
+    return dice
 #Confusion Matrix
 def compute_confusion_matrix(inputs,target):
     TP = 0
@@ -182,7 +186,7 @@ for file in glob.glob("*.jpg"): #ciclo le immagini dentro la cartella
   
   print(in_mask.shape,y_out.shape)
   #mi calcolo gli indici che mi servono
-  DICE=1-dice_loss(y_out/255,in_mask/255)
+  DICE=1-dice(y_out,in_mask)
   JACCARDB=jaccard_binary(in_mask/255, y_out/255)
 
   #(opzionale) posso scartare le immagini che ritornano 1.0 con DICE, ovvero le immagini completamente nere, selezionando no1
