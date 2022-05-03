@@ -81,7 +81,7 @@ def get_pairs_from_text(img_path,text_path, other_inputs_paths=None):
             if file_name.find("_seg")!=-1:
                 file_name=file_name.strip("_seg")
 
-            print(file_name)    
+               
             file_extension=seg_name.split(".")[1]
             full_dir_entry = os.path.join(img_path+"/masks/", seg_name)
             if file_name in segmentation_files:
