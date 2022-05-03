@@ -80,6 +80,7 @@ def get_pairs_from_text(img_path,text_path, other_inputs_paths=None):
         seg_file=line.split(" ")[1]
         print("prova:",seg_file)
         seg_name= seg_file.split("/")[2]
+        print("name:",seg_name)
         
         
         if os.path.isfile((img_path+seg_file)):
