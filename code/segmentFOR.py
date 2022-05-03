@@ -194,7 +194,7 @@ for file in glob.glob("*.jpg"): #ciclo le immagini dentro la cartella
   RECALL1=RECALL(tp,fp,tn,fn)
   F1_SCORE1=F1_SCORE(tp,fn,fp)
 
-  if tp==786432 and fp==0 and tn==0 and fn==0:
+  if tn==786432 and fp==0 and tp==0 and fn==0:
     JACCARDB=1
     DICE=1
   #preparo le immagini per contare i glomeruli
