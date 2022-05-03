@@ -29,8 +29,8 @@ def convert_BW(img, path='', save=False):
     return img
 
 
-folder= sys.argv[1]
-for file in glob.glob(folder+"\*.png"):
-  print(file)
-  convert_BW( Image.open(file),file.replace("_seg",""),True)
-  os.remove(file)
+#folder= sys.argv[1]
+#for file in glob.glob(folder+"\*.png"):
+  #print(file)
+  #convert_BW( Image.open(file),file.replace("_seg",""),True)
+  #os.remove(file)
