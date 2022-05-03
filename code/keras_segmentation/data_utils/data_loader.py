@@ -67,7 +67,7 @@ def get_pairs_from_text(img_path,text_path, other_inputs_paths=None):
         #popola image_files
         img_file=line.split(" ")[0]
         img_name=img_file.split("/")[2]
-        print(img_name)
+        
 
         if os.path.isfile((img_path+img_file)):
             file_name=img_name.split(".")[0]
