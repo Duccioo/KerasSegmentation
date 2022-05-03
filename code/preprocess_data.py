@@ -59,7 +59,7 @@ def rotate(img, img_name, mask, mask_name, degree, postfix):
     mask = mask.rotate(degree)
 
     mask_arr = np.array(mask)
-    mask_conved = BW_B.convert_BW(mask_arr)
+    mask_conved = BW_B.convert_BW(mask)
 
     img.save(os.path.join(dest_dir_img, postfix + img_name))
     Image.fromarray(mask_conved).save(os.path.join(dest_dir_masks,postfix + mask_name))
