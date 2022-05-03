@@ -79,7 +79,7 @@ def get_pairs_from_text(img_path,text_path, other_inputs_paths=None):
         if os.path.isfile((img_path+seg_file).strip()):
             file_name=seg_name.split(".")[0]
             if file_name.find("_seg")!=-1:
-                file_name=file_name.lstrip("_seg")
+                file_name=file_name.strip("_seg")
 
             print(file_name)    
             file_extension=seg_name.split(".")[1]
