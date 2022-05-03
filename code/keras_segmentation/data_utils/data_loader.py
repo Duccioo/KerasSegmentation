@@ -84,9 +84,10 @@ def get_pairs_from_text(img_path,text_path, other_inputs_paths=None):
         print('os:',img_path+seg_file)
         if os.path.isfile((img_path+seg_file)):
             file_name=seg_name.split(".")[0]
+            print('assas')
             print("masks: ",file_name)
             file_extension=seg_name.split(".")[1]
-            full_dir_entry = os.path.join(img_path+"/masks/", seg_file)
+            full_dir_entry = os.path.join(img_path+"/masks/", seg_name)
             if file_name in segmentation_files:
                 raise DataLoaderError("Segmentation file with filename {0}"
                                         " already exists and is ambiguous to"
