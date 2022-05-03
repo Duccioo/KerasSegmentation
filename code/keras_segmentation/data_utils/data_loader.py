@@ -82,7 +82,7 @@ def get_pairs_from_text(img_path,text_path, other_inputs_paths=None):
         seg_name= seg_file.split("/")[2]
         
         print('os:',img_path+seg_file)
-        if os.path.isfile((img_path+img_file)):
+        if os.path.isfile((img_path+seg_file)):
             file_name=seg_name.split(".")[0]
             print('assas')
             print("masks: ",file_name)
