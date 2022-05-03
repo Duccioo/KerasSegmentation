@@ -67,21 +67,15 @@ def get_pairs_from_text(img_path,text_path, other_inputs_paths=None):
         #popola image_files
         img_file=line.split(" ")[0]
         img_name=img_file.split("/")[2]
-        
-
         if os.path.isfile((img_path+img_file)):
             file_name=img_name.split(".")[0]
-            
             file_extension=img_name.split(".")[1]
             image_files.append((file_name, file_extension,
                                 os.path.join(img_path+"/img/",img_name)))
            
         #popola segmentation_files
         seg_file=line.split(" ")[1]
-        
         seg_name= seg_file.split("/")[2]
-        
-        
         if os.path.isfile((img_path+seg_file).strip()):
             file_name=seg_name.split(".")[0]
             file_extension=seg_name.split(".")[1]
@@ -140,7 +134,7 @@ def get_pairs_from_text(img_path,text_path, other_inputs_paths=None):
             raise DataLoaderError("No corresponding segmentation "
                                   "found for image {0}."
                                   .format(image_full_path))
-
+    print (return_value)
     return return_value
 
     
