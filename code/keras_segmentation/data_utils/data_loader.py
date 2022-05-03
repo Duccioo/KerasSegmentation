@@ -77,11 +77,13 @@ def get_pairs_from_text(img_path,text_path, other_inputs_paths=None):
            
         #popola segmentation_files
         seg_file=line.split(" ")[1]
+        seg_name= seg_file.split("/")[2]
         
         
         if os.path.isfile((img_path+seg_file)):
-            file_name, file_extension = os.path.splitext(seg_file)
-            full_dir_entry = os.path.join(img_path, seg_file)
+            file_name=seg_name.split(".")[0]
+            file_extension=seg_name.split(".")[1]
+            full_dir_entry = os.path.join(img_path+"/masks/", seg_file)
             if file_name in segmentation_files:
                 raise DataLoaderError("Segmentation file with filename {0}"
                                         " already exists and is ambiguous to"
