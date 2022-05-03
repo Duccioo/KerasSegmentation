@@ -6,7 +6,7 @@ import glob, os
 
 
 #funzione per convertire in bianco e nero le immagini delle maschere
-def convert_BW(img, path='', save=False):
+def convert_BW(img, path=''):
     img = img.convert("RGB")
     datas = img.getdata()
     new_image_data = []
@@ -24,7 +24,7 @@ def convert_BW(img, path='', save=False):
 
     img.putdata(new_image_data)
     #(opzionale) salvo l'immagine convertita in bianco e nero
-    if save==True:
+    if path!='':
       img.save(path)
     return img
 
