@@ -134,7 +134,6 @@ def get_pairs_from_text(img_path,text_path, other_inputs_paths=None):
             raise DataLoaderError("No corresponding segmentation "
                                   "found for image {0}."
                                   .format(image_full_path))
-    print (return_value)
     return return_value
 
     
