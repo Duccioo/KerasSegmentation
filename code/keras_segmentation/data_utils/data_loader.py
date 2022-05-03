@@ -73,7 +73,7 @@ def get_pairs_from_text(img_path,text_path, other_inputs_paths=None):
             file_name=img_name.split(".")[0]
             file_extension=img_name.split(".")[1]
             image_files.append((file_name, file_extension,
-                                os.path.join(img_path,img_file)))
+                                os.path.join(img_path+"/img/",img_name)))
            
         #popola segmentation_files
         seg_file=line.split(" ")[1]
