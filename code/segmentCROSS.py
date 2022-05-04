@@ -289,15 +289,8 @@ with open(dir_txt) as textfile:
     )
     
     in_mask= np.array(BW.convert_BW(target_img))  # converto in array la maschera di test e la converto in bianco e nero
-    DICE=1-dice(in_mask.reshape(-1)/255,y_out.reshape(-1)/255)
-    if np.isnan(DICE):
-      DICE=0 
-    #JACCARDB=jaccard_binary(in_mask/255, y_out/255)
-    JACCARDB=jaccard_score(in_mask.reshape(-1)/255,y_out.reshape(-1)/255)
-
-    if UNO==False and JACCARDB==1.0: #controllo parametro opzionale no1
-      continue
-
+    
+   
     tp, fp, tn, fn=compute_confusion_matrix(in_mask, y_out)
     ACCURACY1=accuracy_score(in_mask.reshape(-1),y_out.reshape(-1))#(tp+tn)/(tp+tn+fp+fn)
     PRESCISION1=PRECISION(tp,fp,tn,fn)
@@ -307,6 +300,17 @@ with open(dir_txt) as textfile:
     if tn==786432 and fp==0 and tp==0 and fn==0:
       JACCARDB=1
       DICE=1
+
+    else:
+      DICE=1-dice(in_mask.reshape(-1)/255,y_out.reshape(-1)/255)
+      if np.isnan(DICE):
+        DICE=0 
+      #JACCARDB=jaccard_binary(in_mask/255, y_out/255)
+      JACCARDB=jaccard_score(in_mask.reshape(-1)/255,y_out.reshape(-1)/255)
+    
+    if UNO==False and JACCARDB==1.0: #controllo parametro opzionale no1
+      continue
+
 
     #preparo le immagini per contare i glomeruli:
       #immagini predette dalla rete
