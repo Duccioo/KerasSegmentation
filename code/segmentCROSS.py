@@ -282,7 +282,7 @@ with open(dir_txt) as textfile:
     
     y_out =  predict(
       model= model_in,
-      inp=file,
+      inp=in_img_path,
       out_fname=out_img_path,
       colors= label_colours,
       overlay_img=False
