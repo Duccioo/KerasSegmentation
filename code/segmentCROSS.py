@@ -9,7 +9,7 @@ from sklearn.metrics import accuracy_score
 import BW
 from tqdm import tqdm
 import mmap
-import code.notifica_telegram as notifica_telegram
+import notifica_telegram
 from keras_segmentation.predict import predict, model_from_checkpoint_path,overlay_seg_image
 from scipy.spatial.distance import dice
 
