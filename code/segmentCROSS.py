@@ -28,7 +28,7 @@ args = parser.parse_args()
 
 #----------------------------------------------#CONFIG:#---------------------------------------------------------#
 UNO=True #se è False allora salterà l'output di tutte le immagini nere
-COLOR=True #se è False allora non salva le immagini colorate
+COLOR=args.color #se è False allora non salva le immagini colorate
 CONTINUE=True #se è True allora se il programma si ferma continuerà da dove si è fermato
 dir_fold=args.fold_path #esempio '/content/deeplearn/F1
 dir_log=dir_fold+"/LOG/" #cartella per salvare i file di log
@@ -320,7 +320,7 @@ with open(dir_txt) as textfile:
     num_labels_in, labels_in = cv2.connectedComponents(in_component)
   
 
-    if COLOR==True:
+    if args.color:
     #salvo le immagini che evidenziano i glomeruli con colori diversi
       imshow_components(labels_out,out_img_path)
 
