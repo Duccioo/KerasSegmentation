@@ -325,7 +325,7 @@ with open(dir_txt) as textfile:
       imshow_components(labels_out,out_img_path)
 
     if args.overlay:
-      output_img = Image.fromarray(overlay_seg_image(np.array(Image.open(file)),y_out)) 
+      output_img = Image.fromarray(overlay_seg_image(np.array(Image.open(in_img_path)),y_out)) 
       output_img.save(out_img_path)#salvo la maschera
 
     #preparo la media per salvarla nel file
