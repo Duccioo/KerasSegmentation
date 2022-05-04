@@ -4,8 +4,6 @@
 #-u per saltare le immagini tutte nere
 #-n per far svolgere alla rete solo un numero n finito di immagini
 
-
-import tensorflow as tf
 from PIL import Image
 import glob, os
 import numpy as np
@@ -25,13 +23,16 @@ parser.add_argument("-u", "--no1", help="",action="store_true")#-u per saltare l
 parser.add_argument("-c", "--color", help="",action="store_true") #-c per salvare le versioni delle maschere e dell'output della rete a colori
 parser.add_argument("--overlay", help="",action="store_true") 
 parser.add_argument('--output', dest='output_path', type=str)
+parser.add_argument('--input', dest='input_path', type=str)
 parser.add_argument('--log', dest='log_path', type=str)
 parser.add_argument('--checkpoint', dest='checkpoint_path', type=str)
+
 args = parser.parse_args()
 
 #CONFIG:
 dir_log= args.log_path #cartella per salvare i file di log
-dir_in= "/content/TEST/" #cartella per prendere le maschere di test
+dir_in= args.input_path
+#cartella per prendere le maschere di test
 dir_out=args.output_path #cartella per salvare le maschere della rete
 path_model= args.checkpoint_path #percorso dove è il modello della rete già addestrato
 #vado a prendere l'ora per salvare il file di log
@@ -152,11 +153,12 @@ for file in glob.glob("*.jpg"): #ciclo le immagini dentro la cartella
   if args.n_img and i==args.n_img: #controllo parametro opzionale n
     break  
 
-  in_mask_path=dir_in+file.replace(".jpg","")+'_seg.png' #path immagine di test
+  in_mask_path=os.path.join(dir_in,file.replace(".jpg","")+'_seg.png') #path immagine di test
+  
   target_img = Image.open(in_mask_path) #prendo l'immagine già segmentata di test
   
   img = file
-  out_img_path= dir_out+"OUT_"+file #path dell'immagine che restituisce la rete
+  out_img_path=os.path.join(dir_out,"OUT_"+file) #path dell'immagine che restituisce la rete
   #in_mask_path = dir_out+"IN_"+file #(opzionale) path per salvare l'immagine in Bianco e nero della maschera 
   
   
@@ -230,7 +232,7 @@ for file in glob.glob("*.jpg"): #ciclo le immagini dentro la cartella
 
   #creo un stringa da salvare poi in un file di log
   string=file+" "+str(JACCARDB)+" "+str(DICE)+" "+str(num_labels_out-1) +" "+str(num_labels_in-1)+" "+str(ACCURACY1)+" "+str(PRESCISION1)+" "+str(RECALL1)
-  f=open(dir_log+"log"+date+".txt", "a+")
+  f=open(os.path.join(dir_log,"log"+date+".txt"), "a+")
   f.write(string+"\n")
   print("-----------------------------")
   i=i+1

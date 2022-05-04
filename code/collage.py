@@ -1,10 +1,9 @@
-from turtle import color
-from unicodedata import name
+
 from PIL import Image
 import glob, os
 import argparse
 import tqdm
-import time
+
 
 
 #----------------------------------------------#CLI:#---------------------------------------------------------#
