@@ -15,22 +15,24 @@ def convert_BW(img, path=''):
           new_image_data.append((0, 0, 0))
         
         
-        ##
-        elif (item[0]==255 and item[1]==255 and item[2]==255):
-          new_image_data.append((1, 1, 1))
+        # ##
+        # elif (item[0]==255 and item[1]==255 and item[2]==255):
+        #   new_image_data.append((1, 1, 1))
 
         else:
           new_image_data.append(item)
 
     img.putdata(new_image_data)
+    print(path)
     #(opzionale) salvo l'immagine convertita in bianco e nero
     if path!='':
       img.save(path)
     return img
 
 
-#folder= sys.argv[1]
-#for file in glob.glob(folder+"\*.png"):
-  #print(file)
-  #convert_BW( Image.open(file),file.replace("_seg",""),True)
-  #os.remove(file)
+# folder= sys.argv[1]
+# for file in glob.glob(folder+"\*"):
+#   # print(file)
+#   # convert_BW( Image.open(file),file.replace("_seg",""))
+#   convert_BW( Image.open(file),file.replace(".jpg","_BW.jpg"))
+#   os.remove(file)
